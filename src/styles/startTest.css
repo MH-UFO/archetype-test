@@ -1,0 +1,102 @@
+
+
+
+.test-selection-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  color: var(--accent-color);
+  padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.selection-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 1;
+}
+
+.selection-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  z-index: 100;
+}
+
+.selection-instruction {
+  font-family: var(--font-body);
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 600px;
+  line-height: 1.7;
+  margin-bottom: 3rem;
+  z-index: 100;
+}
+
+.selection-instruction .guid-link {
+  color: var(--accent-color);
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+.cards-container {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+}
+
+.choice-card {
+  width: 250px;
+  height: 300px;
+  background: var(--card-bg-color);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 2px solid rgba(240, 230, 140, 0.5);
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.choice-card:hover {
+  transform: scale(1.05);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 15px rgba(240, 230, 140, 0.3);
+}
+
+.card-icon {
+  width: 60px;
+  height: 60px;
+  stroke: var(--accent-color);
+  fill: var(--accent-color);
+}
+
+.card-title {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  color: var(--accent-color);
+  margin: 0;
+}
+
+/* Responsive styles for mobile */
+@media (max-width: 768px) {
+  .selection-title {
+    font-size: 2rem;
+  }
+  .cards-container {
+    flex-direction: column;
+  }
+  .choice-card {
+    width: 220px;
+    height: 260px;
+  }
+}

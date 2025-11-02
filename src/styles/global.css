@@ -1,0 +1,72 @@
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Lato:wght@400;700&display=swap');
+
+/* CSS Variables */
+:root {
+  --primary-bg-color: #1a1a2e;
+  --primary-text-color: #ffffff;
+  --primary-text-color-transparent: rgba(255, 255, 255, 0.75);
+  --accent-color: #f0e68c;
+  --secondary-accent-color: #ffdf80;
+  --danger-color: #c0392b;
+  --danger-hover-color: #e74c3c;
+  --card-bg-color: rgba(26, 26, 46, 0.7);
+  --font-heading: 'Lora', serif;
+  --font-body: 'Vazirmatn', sans-serif;
+}
+
+/* Global Styles */
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--primary-bg-color);
+  color: var(--primary-text-color);
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+/* Button Styles */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: var(--accent-color);
+  color: var(--primary-bg-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--secondary-accent-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: var(--danger-hover-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
