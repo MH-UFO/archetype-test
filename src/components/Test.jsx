@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios"
 import NewQuestion from "./Question"
@@ -53,14 +53,13 @@ function GetAllQuestions(props) {
   }
   console.log(answers)
 
-  // Show results when test is completed
   if (questions.length > 0 && questionIndex >= questions.length) {
     return <Results answers={answers} gender={props.gender} />;
   }
 
   return (
     <div className="test-page">
-      <Link onClick={handleLeavingPage} className="btn btn-danger leave-exam-button" to="/">{questionIndex >= questions.length ? "خروج" : " خروج از آزمون"}</Link>
+      <Link onClick={handleLeavingPage} className="btn btn-danger leave-exam-button" to="/">خروج از آزمون</Link>
       <div style={{ zIndex: "0" }} ><StarryBackground /></div>
       <div className="test-box">
         {(questions.length > 0 && questionIndex < questions.length) ? (

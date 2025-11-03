@@ -1,8 +1,4 @@
-
-/* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Lato:wght@400;700&display=swap');
-
-/* CSS Variables */
 :root {
   --primary-bg-color: #1a1a2e;
   --primary-text-color: #ffffff;
@@ -16,7 +12,7 @@
   --font-body: 'Vazirmatn', sans-serif;
 }
 
-/* Global Styles */
+
 html {
   height: 100%;
   box-sizing: border-box;
@@ -38,7 +34,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Button Styles */
+
 .btn {
   padding: 10px 20px;
   border: none;

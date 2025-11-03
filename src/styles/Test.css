@@ -78,12 +78,12 @@
   text-align: center;
 }
 
-/* This hides the actual radio button */
+
 .answer-button input[type="radio"] {
   display: none;
 }
 
-/* This styles the label to look like a button */
+
 .answer-button label {
   display: block;
   background: transparent;
@@ -98,7 +98,7 @@
   width: 100%;
 }
 
-/* Hover effect for the label-button */
+
 .answer-button label:hover {
   background: var(--accent-color);
   color: var(--primary-bg-color);
@@ -107,7 +107,7 @@
   box-shadow: 0 4px 15px rgba(240, 230, 140, 0.2);
 }
 
-/* Style for the selected answer */
+
 .answer-button input[type="radio"]:checked + label {
   background: var(--accent-color);
   color: var(--primary-bg-color);
@@ -135,22 +135,22 @@
 }
 
 .error-message {
-  color: #ff8a80; /* A soft, theme-appropriate red */
+  color: #ff8a80;
   text-align: center;
   font-weight: 700;
   margin-bottom: 15px;
-  animation: fadeIn 0.3s ease; /* Reuse the fadeIn animation */
+  animation: fadeIn 0.3s ease;
 }
 
 .hint{
   margin: 0px;
   text-align:center;
-  color: var(--secondary-accent-color); /* A soft, theme-appropriate red */
+  color: var(--secondary-accent-color);
 
 }
 
 
-/* --- Mobile Responsiveness --- */
+
 @media (max-width: 768px) {
   .test-box {
     padding: 20px;

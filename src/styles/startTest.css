@@ -87,7 +87,7 @@
   margin: 0;
 }
 
-/* Responsive styles for mobile */
+
 @media (max-width: 768px) {
   .selection-title {
     font-size: 2rem;

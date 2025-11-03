@@ -1,0 +1,79 @@
+.results-page {
+  font-family: var(--font-body);
+  color: var(--primary-text-color);
+  padding: 100px 20px 20px 20px;
+  position: relative;
+  min-height: 100vh;
+}
+
+.leave-exam-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+}
+
+.page-heading {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.page-heading h3 {
+  font-family: var(--font-heading);
+  color: var(--accent-color);
+  margin: 0;
+  font-size: 2rem;
+}
+
+.page-heading p {
+  color: var(--primary-text-color-transparent);
+  font-size: 1.1rem;
+}
+
+.card {
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 0 auto;
+  max-width: 640px;
+}
+
+.comparison-table-container {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 8px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: right;
+}
+
+.comparison-table th {
+  font-family: var(--font-heading);
+  color: var(--accent-color);
+  text-transform: capitalize;
+  font-weight: normal;
+}
+
+.comparison-table th:first-child {
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .leave-exam-button {
+    top: 75px;
+    left: 15px;
+  }
+
+  .results-page {
+    padding: 90px 15px 15px 15px;
+  }
+}

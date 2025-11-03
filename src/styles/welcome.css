@@ -68,7 +68,7 @@
   color: var(--primary-bg-color);
 }
 
-/* Responsive styles */
+
 @media (max-width: 768px) {
   .title {
     font-size: 2rem;

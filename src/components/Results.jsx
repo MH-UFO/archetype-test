@@ -1,5 +1,7 @@
-import React, { useMemo, useRef, useEffect, useState } from 'react';
+import { useMemo, useRef, useEffect, useState } from 'react';
 import StarryBackground from './StarryBackground';
+import { Link, useNavigate } from 'react-router-dom';
+import Header from "./header"
 import '../styles/Results.css';
 
 
@@ -91,7 +93,7 @@ export default function Result({ answers = [], gender }) {
     const pool = gender ? GODS.filter(g => g.gender === gender) : GODS;
     return pool.map(g => ({
       ...g,
-      vec: CATEGORIES.map(c => (Number(g.scores[c]) || 0) / 10), 
+      vec: CATEGORIES.map(c => (Number(g.scores[c]) || 0) / 10),
     }));
   }, [gender]);
 
@@ -114,39 +116,40 @@ export default function Result({ answers = [], gender }) {
   const similarityPercent = top ? Math.round(((top.sim + 1) / 2) * 100) : 0;
 
   const COLORS = {
-    user: 'var(--accent, #6366f1)',
-    god: 'var(--primary, #10b981)',
-    textMuted: 'var(--text-muted, #6b7280)',
-    cardBg: 'var(--card-bg, #ffffff)',
-    border: 'var(--border-color, #e5e7eb)',
+    user: '#63b3ed',
+    god: 'var(--secondary-accent-color)',
+    textMuted: 'var(--primary-text-color-transparent)',
+    border: 'rgba(255, 255, 255, 0.2)',
   };
+  const navigate = useNavigate();
+  
+  function handleLeavingPage(e) {
+    e.preventDefault()
+    if (window.confirm('آیا مطمئنید که میخواهید خارج شوید؟')) {
+      navigate("/")
+    }
+  }
 
   return (
-    <section style={{ marginTop: 24 }}>
-      <StarryBackground/>
+    <div className="results-page">
+      <Header />
+      <Link onClick={handleLeavingPage} className="btn btn-danger leave-exam-button" to="/">خروج</Link>
+      <StarryBackground />
       {!answers || answers.length === 0 ? (
         <p style={{ color: COLORS.textMuted }}>Answer the questions to see your archetype result.</p>
       ) : !top ? (
         <p style={{ color: COLORS.textMuted }}>Calculating your result…</p>
       ) : (
         <>
-          <header style={{ marginBottom: 12 }}>
-            <h2 style={{ margin: 0 }}>
+          <div className="page-heading">
+            <h3>
               You’re most similar to: {top.name} {top.gender ? `(${capitalize(top.gender)})` : ''}
-            </h2>
-            <p style={{ margin: '4px 0', color: COLORS.textMuted }}>{similarityPercent}% match</p>
-          </header>
+            </h3>
+            <p>{similarityPercent}% match</p>
+          </div>
 
-          <div
-            className="card"
-            style={{
-              background: COLORS.cardBg,
-              border: `1px solid ${COLORS.border}`,
-              borderRadius: 12,
-              overflow: 'hidden',
-            }}
-          >
-            <div className='glass-background' style={{ padding: 16 }}>
+          <div className="card">
+            <div style={{ padding: 16 }}>
               <RadarChart
                 categories={CATEGORIES.map(capitalize)}
                 series={[
@@ -170,7 +173,8 @@ export default function Result({ answers = [], gender }) {
             </div>
           </div>
 
-          <div style={{ marginTop: 16 }}>
+          {/* Optional: show a concise table of your raw averages next to the top god (scaled) */}
+          <div className="comparison-table-container">
             <SmallComparisonTable
               categories={CATEGORIES}
               user={userCategoryAverages}
@@ -181,22 +185,22 @@ export default function Result({ answers = [], gender }) {
           </div>
         </>
       )}
-    </section>
+    </div>
   );
 }
 
 function RadarChart({ categories, series, levels = 5, borderColor = '#e5e7eb', textColor = '#6b7280' }) {
   const containerRef = useRef(null);
-  const [size, setSize] = useState(320);
+  const [size, setSize] = useState(400);
 
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     const RO = window.ResizeObserver || null;
-    if (!RO) return; 
+    if (!RO) return;
     const ro = new RO(entries => {
       const cr = entries[0].contentRect;
-      const s = Math.floor(Math.min(cr.width, 480));
+      const s = Math.floor(Math.min(cr.width, 640)); // clamp for readability
       setSize(Math.max(260, s));
     });
     ro.observe(el);
@@ -207,7 +211,7 @@ function RadarChart({ categories, series, levels = 5, borderColor = '#e5e7eb', t
   const H = size;
   const cx = W / 2;
   const cy = H / 2;
-  const pad = 28;
+  const pad = 90;
   const R = Math.min(cx, cy) - pad;
   const N = categories.length;
 
@@ -249,7 +253,7 @@ function RadarChart({ categories, series, levels = 5, borderColor = '#e5e7eb', t
   };
 
   return (
-    <figure ref={containerRef} style={{ width: '100%'}} aria-label="Archetype similarity radar chart">
+    <figure ref={containerRef} style={{ width: '100%' }} aria-label="Archetype similarity radar chart">
       <svg width={W} height={H} role="img">
         <g>
           {grid}
@@ -284,28 +288,25 @@ function RadarChart({ categories, series, levels = 5, borderColor = '#e5e7eb', t
   );
 }
 
-function SmallComparisonTable({ categories, user, god, textColor, borderColor }) {
-  const headerStyle = { textTransform: 'capitalize', color: textColor, fontSize: 12 };
-  const cellStyle = { padding: '6px 8px', borderTop: `1px solid ${borderColor}` };
-
+function SmallComparisonTable({ categories, user, god }) {
   const toFixed = (n) => (Math.round(n * 100) / 100).toFixed(2);
 
   return (
     <div style={{ overflowX: 'auto' }}>
-      <table style={{ borderCollapse: 'collapse', width: '100%', minWidth: 420 }}>
+      <table className="comparison-table">
         <thead>
           <tr>
-            <th style={{ textAlign: 'left', ...cellStyle }}></th>
-            <th style={{ textAlign: 'right', ...cellStyle }}>You (avg)</th>
-            <th style={{ textAlign: 'right', ...cellStyle }}>God (scaled)</th>
+            <th></th>
+            <th>You (avg)</th>
+            <th>God (scaled)</th>
           </tr>
         </thead>
         <tbody>
           {categories.map((c, i) => (
             <tr key={c}>
-              <td style={{ ...cellStyle, ...headerStyle }}>{c}</td>
-              <td style={{ ...cellStyle, textAlign: 'right' }}>{toFixed(user[i])}/2</td>
-              <td style={{ ...cellStyle, textAlign: 'right' }}>{toFixed(god[i])}/2</td>
+              <th>{c}</th>
+              <td>{toFixed(user[i])}/2</td>
+              <td>{toFixed(god[i])}/2</td>
             </tr>
           ))}
         </tbody>

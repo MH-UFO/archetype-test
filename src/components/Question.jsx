@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 function NewQuestion(props) {
     const [answer, setAnswer] = useState("");
