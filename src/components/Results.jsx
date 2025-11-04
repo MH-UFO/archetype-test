@@ -146,22 +146,24 @@ export default function Result({ answers = [], gender }) {
     border: 'rgba(255, 255, 255, 0.2)',
   };
   const navigate = useNavigate();
-  
-  function handleLeavingPage(e) {
-    e.preventDefault()
-    if (window.confirm('آیا مطمئنید که میخواهید خارج شوید؟')) {
-      navigate("/")
-    }
+
+  function handleLinkClick(targetPath) {
+    return (e) => {
+      e.preventDefault();
+      if (window.confirm('آیا مطمئنید که میخواهید خارج شوید؟')) {
+        navigate(targetPath);
+      }
+    };
   }
 
   return (
     <div className="results-page">
-      <Link onClick={handleLeavingPage} className="btn btn-danger leave-exam-button" to="/">خروج</Link>
+      <Link onClick={handleLinkClick('/')} className="btn btn-danger leave-exam-button" to="/">خروج</Link>
       <StarryBackground />
       {!answers || answers.length === 0 ? (
-        <p style={{ color: COLORS.textMuted }}>لطفا برای شناختن کهن الگوی خود اول یه سوالات پاسخ</p>
+        <p className="no-answers-message">لطفا برای شناختن کهن الگوی خود اول به سوالات پاسخ</p>
       ) : !top ? (
-        <p style={{ color: COLORS.textMuted }}> ...در حال محاسبه نتیجه</p>
+        <p className="loading-message"> ...در حال محاسبه نتیجه</p>
       ) : (
         <>
           <div className="page-heading">
@@ -195,6 +197,8 @@ export default function Result({ answers = [], gender }) {
               />
             </div>
           </div>
+          <div className='link-to-gods'><Link to="/guid" onClick={handleLinkClick('/guid')}>راهنمای خدایان</Link></div>
+
 
           <div className="comparison-table-container">
             <SmallComparisonTable
@@ -222,7 +226,7 @@ function RadarChart({ categories, series, levels = 5, borderColor = '#e5e7eb', t
     if (!RO) return;
     const ro = new RO(entries => {
       const cr = entries[0].contentRect;
-      const s = Math.floor(Math.min(cr.width, 640)); 
+      const s = Math.floor(Math.min(cr.width, 640));
       setSize(Math.max(260, s));
     });
     ro.observe(el);

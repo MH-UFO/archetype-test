@@ -60,6 +60,64 @@
   text-align: left;
 }
 
+.link-to-gods {
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.link-to-gods>* {
+  text-decoration: none;
+  color: var(--accent-color);
+  transition: all 0.3s ease-in-out;
+}
+
+.link-to-gods>*:hover {
+  color: var(--secondary-accent-color);
+  transform: translateY(-2px);
+  text-shadow: 0 0 10px var(--secondary-accent-color);
+}
+
+.loading-message,
+.no-answers-message {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 40px;
+  color: var(--primary-text-color-transparent);
+}
+
+.loading-message {
+  animation: pulse 2s infinite ease-in-out;
+}
+
+.no-answers-message {
+  animation: fadeIn 1s ease-in;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
 @media (max-width: 768px) {
   .leave-exam-button {
     top: 75px;

@@ -8,7 +8,7 @@ import StarryBackground from './StarryBackground';
 
 function GetAllQuestions(props) {
   const navigate = useNavigate()
-const [questionIndex, setQuestionIndex] = useState(69) 
+const [questionIndex, setQuestionIndex] = useState(0) 
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([])
   const progress = questions.length > 0 ? ((questionIndex) / questions.length) * 100 : 0;
