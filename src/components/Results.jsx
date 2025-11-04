@@ -96,9 +96,8 @@ export default function Result({ answers = [], gender }) {
     return dot / denom;
   };
 
-  const userCategoryAverages = useMemo(() => {
+  const userCategoryTotals = useMemo(() => {
     const sums = Object.fromEntries(ENGLISH_CATEGORIES.map(c => [c, 0]));
-    const counts = Object.fromEntries(ENGLISH_CATEGORIES.map(c => [c, 0]));
     for (const item of answers) {
       if (!item) continue;
       const persianCat = String(item.answer_category || '').trim();
@@ -107,23 +106,23 @@ export default function Result({ answers = [], gender }) {
       if (!Number.isFinite(val)) continue;
       if (cat && ENGLISH_CATEGORIES.includes(cat)) {
         sums[cat] += clamp(val, -2, 2);
-        counts[cat] += 1;
       }
     }
-    return ENGLISH_CATEGORIES.map(c => (counts[c] ? sums[c] / counts[c] : 0));
+    // Clamp totals to -20 to +20 range
+    return ENGLISH_CATEGORIES.map(c => clamp(sums[c], -20, 20));
   }, [answers]);
 
   const godProfiles = useMemo(() => {
     const pool = gender ? GODS.filter(g => g.gender === gender) : GODS;
     return pool.map(g => ({
       ...g,
-      vec: ENGLISH_CATEGORIES.map(c => (Number(g.scores[c]) || 0) / 10),
+      vec: ENGLISH_CATEGORIES.map(c => Number(g.scores[c]) || 0),
     }));
   }, [gender]);
 
   const ranking = useMemo(() => {
-    if (!userCategoryAverages.length || !godProfiles.length) return [];
-    const userZ = zScore(userCategoryAverages);
+    if (!userCategoryTotals.length || !godProfiles.length) return [];
+    const userZ = zScore(userCategoryTotals);
     const results = godProfiles.map(g => {
       const gZ = zScore(g.vec);
       const sim = cosineSimilarity(userZ, gZ); // -1..1
@@ -131,12 +130,12 @@ export default function Result({ answers = [], gender }) {
     });
     results.sort((a, b) => b.sim - a.sim);
     return results;
-  }, [userCategoryAverages, godProfiles]);
+  }, [userCategoryTotals, godProfiles]);
 
   const top = ranking[0];
 
-  const userPlot = useMemo(() => normalize01(userCategoryAverages, -2, 2), [userCategoryAverages]);
-  const topGodPlot = useMemo(() => (top ? normalize01(top.vec, -2, 2) : []), [top]);
+  const userPlot = useMemo(() => normalize01(userCategoryTotals, -20, 20), [userCategoryTotals]);
+  const topGodPlot = useMemo(() => (top ? normalize01(top.vec, -20, 20) : []), [top]);
   const similarityPercent = top ? Math.round(((top.sim + 1) / 2) * 100) : 0;
 
   const COLORS = {
@@ -197,13 +196,17 @@ export default function Result({ answers = [], gender }) {
               />
             </div>
           </div>
-          <div className='link-to-gods'><Link to="/guid" onClick={handleLinkClick('/guid')}>راهنمای خدایان</Link></div>
+          <div className="gods-guide-container">
+            <Link to="/guid" onClick={handleLinkClick('/guid')} className="gods-guide-button">
+              راهنمای خدایان
+            </Link>
+          </div>
 
 
           <div className="comparison-table-container">
             <SmallComparisonTable
               categories={CATEGORIES}
-              user={userCategoryAverages}
+              user={userCategoryTotals}
               god={top.vec}
               textColor={COLORS.textMuted}
               borderColor={COLORS.border}
@@ -315,7 +318,7 @@ function RadarChart({ categories, series, levels = 5, borderColor = '#e5e7eb', t
 }
 
 function SmallComparisonTable({ categories, user, god }) {
-  const toFixed = (n) => (Math.round(n * 100) / 100).toFixed(2);
+  const toFixed = (n) => (Math.round(n * 100) / 100).toFixed(0);
 
   return (
     <div style={{ overflowX: 'auto' }}>
@@ -323,16 +326,16 @@ function SmallComparisonTable({ categories, user, god }) {
         <thead>
           <tr>
             <th></th>
-            <th>شما (میانگین)</th>
-            <th>کهن الگو (مقیاس)</th>
+            <th>شما (مجموع)</th>
+            <th>کهن الگو (امتیاز)</th>
           </tr>
         </thead>
         <tbody>
           {categories.map((c, i) => (
             <tr key={c}>
               <th>{c}</th>
-              <td>{toFixed(user[i])}/2</td>
-              <td>{toFixed(god[i])}/2</td>
+              <td>{toFixed(user[i])}/20</td>
+              <td>{toFixed(god[i])}/20</td>
             </tr>
           ))}
         </tbody>
