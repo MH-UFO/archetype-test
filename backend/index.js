@@ -21,7 +21,7 @@ const db = new Pool({
 app.get("/api/archetype_test/:gender", async (req, res) => {
     try {
         console.log(req.params.gender)
-        let allQuestions = await db.query(`SELECT * FROM ${req.params.gender}_questions`)
+        let allQuestions = await db.query(`SELECT * FROM ${req.params.gender}_questions order by id ASC`)
         res.json(allQuestions.rows)
     } catch (err) {
         res.json(err.message)

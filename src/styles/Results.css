@@ -1,16 +1,9 @@
 .results-page {
   font-family: var(--font-body);
   color: var(--primary-text-color);
-  padding: 100px 20px 20px 20px;
+  padding: 50px 20px 20px 20px;
   position: relative;
-  min-height: 100vh;
-}
-
-.leave-exam-button {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 100;
+  min-height: 100dvh;
 }
 
 .page-heading {

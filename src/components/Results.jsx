@@ -1,51 +1,74 @@
 import { useMemo, useRef, useEffect, useState } from 'react';
 import StarryBackground from './StarryBackground';
 import { Link, useNavigate } from 'react-router-dom';
-import Header from "./header"
 import '../styles/Results.css';
 
+const capitalize = (s) => {
+  if (typeof s !== 'string') return ''
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
 
 export default function Result({ answers = [], gender }) {
-  const CATEGORIES = ['dominance', 'strategy', 'creativity', 'independence', 'emotion', 'cunning', 'depth'];
+  const ENGLISH_CATEGORIES = ['dominance', 'strategy', 'creativity', 'independence', 'emotion', 'cunning', 'depth'];
+  const PERSIAN_CATEGORIES = ['تسلط', 'استراتژی', 'خلاقیت', 'استقلال', 'احساسات', 'زیرکی', 'عمق'];
+  const CATEGORIES = PERSIAN_CATEGORIES;
+
+  const PERSIAN_TO_ENGLISH_CATEGORY_MAP = {
+    'تسلط': 'dominance',
+    'استراتژی': 'strategy',
+    'خلاقیت': 'creativity',
+    'استقلال': 'independence',
+    'احساسات': 'emotion',
+    'زیرکی': 'cunning',
+    'عمق': 'depth',
+  };
 
   const GODS = [
     {
-      name: 'Zeus',
+      name: 'زئوس',
+      englishName: 'Zeus',
       gender: 'male',
       scores: { dominance: 20, strategy: 12, creativity: 8, independence: 10, emotion: 15, cunning: 5, depth: -5 },
     },
     {
-      name: 'Apollo',
+      name: 'آپولو',
+      englishName: 'Apollo',
       gender: 'male',
       scores: { dominance: 5, strategy: 10, creativity: 20, independence: 12, emotion: 8, cunning: -10, depth: 10 },
     },
     {
-      name: 'Ares',
+      name: 'آرس',
+      englishName: 'Ares',
       gender: 'male',
       scores: { dominance: 18, strategy: -5, creativity: -15, independence: 8, emotion: 20, cunning: -8, depth: -10 },
     },
     {
-      name: 'Hermes',
+      name: 'هرمس',
+      englishName: 'Hermes',
       gender: 'male',
       scores: { dominance: -5, strategy: 15, creativity: 12, independence: 18, emotion: -5, cunning: 20, depth: 5 },
     },
     {
-      name: 'Athena',
+      name: 'آتنا',
+      englishName: 'Athena',
       gender: 'female',
       scores: { dominance: 12, strategy: 20, creativity: 15, independence: 10, emotion: -10, cunning: 8, depth: 12 },
     },
     {
-      name: 'Aphrodite',
+      name: 'آفرودیت',
+      englishName: 'Aphrodite',
       gender: 'female',
       scores: { dominance: -8, strategy: 5, creativity: 18, independence: -5, emotion: 20, cunning: 15, depth: 8 },
     },
     {
-      name: 'Artemis',
+      name: 'آرتمیس',
+      englishName: 'Artemis',
       gender: 'female',
       scores: { dominance: 8, strategy: 10, creativity: 5, independence: 20, emotion: -15, cunning: 12, depth: 15 },
     },
     {
-      name: 'Persephone',
+      name: 'پرسفونه',
+      englishName: 'Persephone',
       gender: 'female',
       scores: { dominance: -10, strategy: 8, creativity: 10, independence: -12, emotion: 12, cunning: -5, depth: 20 },
     },
@@ -74,26 +97,27 @@ export default function Result({ answers = [], gender }) {
   };
 
   const userCategoryAverages = useMemo(() => {
-    const sums = Object.fromEntries(CATEGORIES.map(c => [c, 0]));
-    const counts = Object.fromEntries(CATEGORIES.map(c => [c, 0]));
+    const sums = Object.fromEntries(ENGLISH_CATEGORIES.map(c => [c, 0]));
+    const counts = Object.fromEntries(ENGLISH_CATEGORIES.map(c => [c, 0]));
     for (const item of answers) {
       if (!item) continue;
-      const cat = String(item.answer_category || '').trim().toLowerCase();
+      const persianCat = String(item.answer_category || '').trim();
+      const cat = PERSIAN_TO_ENGLISH_CATEGORY_MAP[persianCat];
       const val = Number(item.answer);
       if (!Number.isFinite(val)) continue;
-      if (CATEGORIES.includes(cat)) {
+      if (cat && ENGLISH_CATEGORIES.includes(cat)) {
         sums[cat] += clamp(val, -2, 2);
         counts[cat] += 1;
       }
     }
-    return CATEGORIES.map(c => (counts[c] ? sums[c] / counts[c] : 0));
+    return ENGLISH_CATEGORIES.map(c => (counts[c] ? sums[c] / counts[c] : 0));
   }, [answers]);
 
   const godProfiles = useMemo(() => {
     const pool = gender ? GODS.filter(g => g.gender === gender) : GODS;
     return pool.map(g => ({
       ...g,
-      vec: CATEGORIES.map(c => (Number(g.scores[c]) || 0) / 10),
+      vec: ENGLISH_CATEGORIES.map(c => (Number(g.scores[c]) || 0) / 10),
     }));
   }, [gender]);
 
@@ -132,20 +156,19 @@ export default function Result({ answers = [], gender }) {
 
   return (
     <div className="results-page">
-      <Header />
       <Link onClick={handleLeavingPage} className="btn btn-danger leave-exam-button" to="/">خروج</Link>
       <StarryBackground />
       {!answers || answers.length === 0 ? (
-        <p style={{ color: COLORS.textMuted }}>Answer the questions to see your archetype result.</p>
+        <p style={{ color: COLORS.textMuted }}>لطفا برای شناختن کهن الگوی خود اول یه سوالات پاسخ</p>
       ) : !top ? (
-        <p style={{ color: COLORS.textMuted }}>Calculating your result…</p>
+        <p style={{ color: COLORS.textMuted }}> ...در حال محاسبه نتیجه</p>
       ) : (
         <>
           <div className="page-heading">
             <h3>
-              You’re most similar to: {top.name} {top.gender ? `(${capitalize(top.gender)})` : ''}
+              شما بیشترین شباهت را به {top.name} {top.gender ? `(${capitalize(top.gender === 'male' ? 'مرد' : 'زن')})` : ''} دارید
             </h3>
-            <p>{similarityPercent}% match</p>
+            <p>{similarityPercent}% شباهت</p>
           </div>
 
           <div className="card">
@@ -155,7 +178,7 @@ export default function Result({ answers = [], gender }) {
                 series={[
                   {
                     id: 'you',
-                    label: 'You',
+                    label: 'شما',
                     values: userPlot,
                     color: COLORS.user,
                   },
@@ -173,7 +196,6 @@ export default function Result({ answers = [], gender }) {
             </div>
           </div>
 
-          {/* Optional: show a concise table of your raw averages next to the top god (scaled) */}
           <div className="comparison-table-container">
             <SmallComparisonTable
               categories={CATEGORIES}
@@ -200,7 +222,7 @@ function RadarChart({ categories, series, levels = 5, borderColor = '#e5e7eb', t
     if (!RO) return;
     const ro = new RO(entries => {
       const cr = entries[0].contentRect;
-      const s = Math.floor(Math.min(cr.width, 640)); // clamp for readability
+      const s = Math.floor(Math.min(cr.width, 640)); 
       setSize(Math.max(260, s));
     });
     ro.observe(el);
@@ -297,8 +319,8 @@ function SmallComparisonTable({ categories, user, god }) {
         <thead>
           <tr>
             <th></th>
-            <th>You (avg)</th>
-            <th>God (scaled)</th>
+            <th>شما (میانگین)</th>
+            <th>کهن الگو (مقیاس)</th>
           </tr>
         </thead>
         <tbody>
@@ -313,8 +335,4 @@ function SmallComparisonTable({ categories, user, god }) {
       </table>
     </div>
   );
-}
-
-function capitalize(s) {
-  return typeof s === 'string' && s.length ? s[0].toUpperCase() + s.slice(1) : s;
 }

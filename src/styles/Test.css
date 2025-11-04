@@ -1,8 +1,11 @@
-
-
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .test-page {
@@ -15,13 +18,6 @@
   font-family: var(--font-body);
 }
 
-.leave-exam-button {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 100;
-}
-
 .test-box {
   width: 100%;
   max-width: 700px;
@@ -31,7 +27,15 @@
   padding: 40px;
   border-radius: 20px;
   border: 1px solid rgba(240, 230, 140, 0.2);
+  display: flex;
+  flex-direction: column;
+}
 
+.leave-exam-button {
+  position: absolute;
+  top: 1.2rem;
+  left: 1.2rem;
+  z-index: 10;
 }
 
 .progress-text {
@@ -108,7 +112,7 @@
 }
 
 
-.answer-button input[type="radio"]:checked + label {
+.answer-button input[type="radio"]:checked+label {
   background: var(--accent-color);
   color: var(--primary-bg-color);
   border-color: var(--accent-color);
@@ -142,9 +146,9 @@
   animation: fadeIn 0.3s ease;
 }
 
-.hint{
+.hint {
   margin: 0px;
-  text-align:center;
+  text-align: center;
   color: var(--secondary-accent-color);
 
 }
@@ -155,13 +159,16 @@
   .test-box {
     padding: 20px;
   }
+
   .question-text {
     font-size: 1.5rem;
     margin: 30px 0;
   }
+
   .answers-container {
     grid-template-columns: 1fr;
   }
+
   .answer-button label {
     padding: 15px;
     font-size: 1rem;

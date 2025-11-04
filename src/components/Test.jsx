@@ -8,7 +8,7 @@ import StarryBackground from './StarryBackground';
 
 function GetAllQuestions(props) {
   const navigate = useNavigate()
-  const [questionIndex, setQuestionIndex] = useState(69)
+const [questionIndex, setQuestionIndex] = useState(69) 
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([])
   const progress = questions.length > 0 ? ((questionIndex) / questions.length) * 100 : 0;
@@ -59,7 +59,7 @@ function GetAllQuestions(props) {
 
   return (
     <div className="test-page">
-      <Link onClick={handleLeavingPage} className="btn btn-danger leave-exam-button" to="/">خروج از آزمون</Link>
+      <Link onClick={handleLeavingPage} className="btn btn-danger leave-exam-button" to="/archetype_test">خروج از آزمون</Link>
       <div style={{ zIndex: "0" }} ><StarryBackground /></div>
       <div className="test-box">
         {(questions.length > 0 && questionIndex < questions.length) ? (
