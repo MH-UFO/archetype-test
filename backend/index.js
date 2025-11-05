@@ -2,6 +2,9 @@ import express from "express"
 import bodyParser from "body-parser"
 import cors from "cors"
 import { Pool } from "pg"
+import dotenv from "dotenv"
+
+dotenv.config()
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -11,11 +14,11 @@ app.use(express.json());
 
 
 const db = new Pool({
-    user: "postgres",
-    host: "localhost",
-    database: "archetypes",
-    password: "13873387",
-    port: 5000
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT
 })
 
 app.get("/api/archetype_test/:gender", async (req, res) => {
