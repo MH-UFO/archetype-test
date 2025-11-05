@@ -1,16 +1,156 @@
-# React + Vite
+# Archetype Test - Greek Mythology Quiz
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A beautiful, interactive web application that helps users discover their personality archetype based on Greek mythology gods and goddesses. Users answer 70 questions across 7 personality categories and receive detailed results showing their similarity to different mythological archetypes.
 
-Currently, two official plugins are available:
+## 🌟 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **70-Question Personality Assessment**: Comprehensive test covering 7 personality dimensions
+- **Mythological Archetypes**: Compare yourself to 8 gods/goddesses (Zeus, Apollo, Ares, Hermes, Athena, Aphrodite, Artemis, Persephone)
+- **Beautiful Visualizations**: Interactive radar charts and comparison tables
+- **Persian Localization**: Full Persian language support
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
 
-## React Compiler
+## 🛠️ Technologies Used
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Frontend
+- **React 19** - Modern UI framework
+- **Vite** - Fast build tool and development server
+- **React Router DOM** - Client-side routing
 
-## Expanding the ESLint configuration
+### Backend
+- **Node.js** - JavaScript runtime
+- **Express.js** - Web application framework
+- **PostgreSQL** - Relational database
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js (v16 or higher)
+- PostgreSQL database
+- npm or yarn package manager
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd archtypes
+   ```
+
+2. **Install frontend dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Install backend dependencies**
+   ```bash
+   cd backend
+   npm install
+   cd ..
+   ```
+
+### Database Setup
+
+1. **Create PostgreSQL Database**
+   ```sql
+   CREATE DATABASE archetype_test;
+   ```
+
+2. **Create Tables**
+   You need to create two tables for questions:
+   ```sql
+   -- Male questions table
+   CREATE TABLE male_questions (
+       id SERIAL PRIMARY KEY,
+       question_text TEXT NOT NULL,
+       category VARCHAR(50) NOT NULL
+   );
+
+   -- Female questions table
+   CREATE TABLE female_questions (
+       id SERIAL PRIMARY KEY,
+       question_text TEXT NOT NULL,
+       category VARCHAR(50) NOT NULL
+   );
+   ```
+
+3. **Configure Environment Variables**
+   Create a `.env` file in the `backend` directory:
+   ```env
+   DB_USER=your_postgres_username
+   DB_HOST=localhost
+   DB_NAME=archetype_test
+   DB_PASSWORD=your_postgres_password
+   DB_PORT=5432
+   PORT=3000
+   ```
+
+4. **Populate Database**
+   Insert your 70 questions (35 for each gender) into the respective tables with appropriate categories:
+   - dominance
+   - strategy
+   - creativity
+   - independence
+   - emotion
+   - cunning
+   - depth
+
+### Running the Application
+
+1. **Start the Backend Server**
+   ```bash
+   cd backend
+   node index.js
+   ```
+   The backend/API will run on `http://localhost:3000`
+
+2. **Start the Frontend Development Server**
+   ```bash
+   # In the root directory
+   npm run dev
+   ```
+   The frontend will run on `http://localhost:5173`
+
+3. **Access the Application**
+   Open your browser and navigate to `http://localhost:5173`
+
+## 📁 Project Structure
+
+```
+archtypes/
+├── src/
+│   ├── components/          # React components
+│   │   ├── Results.jsx      # Test results and visualization
+│   │   ├── Test.jsx         # Main test component
+│   │   ├── StarryBackground.jsx
+│   │   └── ...
+│   ├── styles/              # CSS stylesheets
+│   │   ├── global.css       # Global styles and variables
+│   │   ├── Results.css      # Results page styling
+│   │   └── ...
+│   └── main.jsx            # Application entry point
+├── backend/
+│   ├── index.js            # Express server
+│   ├── package.json        # Backend dependencies
+│   └── .env               # Environment variables
+├── data/
+│   └── Gods/
+│       └── god's scores.md # Archetype scoring data
+└── package.json           # Frontend dependencies
+```
+
+## 🎨 Customization
+
+- **Colors**: Modify CSS variables in `src/styles/global.css`
+- **Questions**: Update database tables with new questions
+- **Archetypes**: Modify god scores in `src/components/Results.jsx`
+- **Categories**: Add/remove personality dimensions by updating the category arrays
+
+## 📱 Responsive Design
+
+The application is fully responsive and includes:
+- Mobile-optimized layouts
+- Touch-friendly interactions
+- Adaptive typography and spacing
+- Optimized chart rendering for small screens
+
