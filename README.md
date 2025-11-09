@@ -10,6 +10,12 @@ A beautiful, interactive web application that helps users discover their persona
 - **Persian Localization**: Full Persian language support
 - **Responsive Design**: Works seamlessly on desktop and mobile devices
 
+## 📸screenshots
+![Landing page](./data/screenshots/Screenshot%202025-11-09%20181910.png)
+![Test page](./data/screenshots/Screenshot%202025-11-09%20181925.png)
+![Chart page](./data/screenshots/Screenshot%202025-11-09%20181952.png)
+
+
 ## 🛠️ Technologies Used
 
 ### Frontend
