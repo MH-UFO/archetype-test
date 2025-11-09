@@ -62,15 +62,15 @@ A beautiful, interactive web application that helps users discover their persona
    -- Male questions table
    CREATE TABLE male_questions (
        id SERIAL PRIMARY KEY,
-       question_text TEXT NOT NULL,
-       category VARCHAR(50) NOT NULL
+       question TEXT NOT NULL,
+       question_category VARCHAR(50) NOT NULL
    );
 
    -- Female questions table
    CREATE TABLE female_questions (
        id SERIAL PRIMARY KEY,
-       question_text TEXT NOT NULL,
-       category VARCHAR(50) NOT NULL
+       question TEXT NOT NULL,
+       question_category VARCHAR(50) NOT NULL
    );
    ```
 
